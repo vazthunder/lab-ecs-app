@@ -39,6 +39,10 @@ jobs:
     needs: build
     runs-on: [ "self-hosted", "lab-ecs", "test", "bastion" ]
     steps:
+      - name: "Setup AWS information"
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
       - name: "Rollout service on ECS Cluster"
         run: |
           aws ecs update-service --cluster $PROJECT-$ENV-cluster --service $APP_NAME --force-new-deployment
